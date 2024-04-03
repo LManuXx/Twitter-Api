@@ -3,21 +3,44 @@
 const Usuario = require('../models/User.js');
 
 exports.obtenerTodosLosUsuarios = async (req, res) => {
-  // Lógica para obtener todos los usuarios
+  try{
+    const usuarios = await Usuario.find()
+    res.json(usuarios)
+  }catch(error){
+    res.status(500).json({
+        mensaje: 'Error al obtener usuarios',
+        error: error.message
+    })
+  }
 };
 
 exports.obtenerUsuarioPorId = async (req, res) => {
-  // Lógica para obtener un usuario por su ID
+  try{
+    const id = req.params.id
+    const usuario = Usuario.findById(id)
+    if(!usuario){
+        return res.status(404).json({
+            mensaje:'Usuario no encontrado'
+        })
+    }
+    res.json(usuario)
+
+  }catch(error){
+    res.status(500).json({
+        mensaje: 'Error al obtener el usuario',
+        error: error.message
+    })
+  }
 };
 
 exports.crearNuevoUsuario = async (req, res) => {
-  // Lógica para crear un nuevo usuario
+  
 };
 
 exports.actualizarUsuario = async (req, res) => {
-  // Lógica para actualizar un usuario existente
+  
 };
 
 exports.eliminarUsuarioPorId = async (req, res) => {
-  // Lógica para eliminar un usuario por su ID
+  
 };
