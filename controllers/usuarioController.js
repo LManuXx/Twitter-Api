@@ -38,7 +38,7 @@ exports.crearNuevoUsuario = async (req, res) => {
 
   try {
 
-    const usuarioExistente = Usuario.findOne({correo})
+    const usuarioExistente = await Usuario.findOne({correo})
 
     if(usuarioExistente){
       return res.status(400).json({
@@ -104,7 +104,10 @@ exports.actualizarUsuario = async (req, res) => {
     }
 
     
-    if (usuarioActual._id !== usuario._id) {
+    if (usuarioActual.id != usuario._id) {
+      console.log(usuarioActual._id + "         ")
+      console.log(usuario._id + "         ")
+
       return res.status(403).json({ mensaje: 'No tienes permiso para actualizar este usuario' });
     }
 
@@ -135,5 +138,36 @@ exports.actualizarUsuario = async (req, res) => {
 };
 
 exports.eliminarUsuarioPorId = async (req, res) => {
+
+  const { id } = req.params;
+  const usuarioActual = req.usuario; 
+
+  try {
+    let usuario = await Usuario.findById(id);
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    
+    if (usuarioActual.id != usuario._id) {
+
+      return res.status(403).json({ mensaje: 'No tienes permiso para actualizar este usuario' });
+    }
+
+    console.log(usuario)
+
+
+    await Usuario.deleteOne({_id:usuario._id})
+    res.clearCookie('token')
+    res.json({ mensaje: 'Usuario eliminado exitosamente', usuario });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al eliminar usuario', error: error.message });
+  }
   
 };
+
+exports.logout = async (req,res) => {
+  res.clearCookie('token')
+  res.json({ mensaje: 'Sesión cerrada correctamente' })
+}

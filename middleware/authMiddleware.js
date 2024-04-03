@@ -1,7 +1,6 @@
-const jwt = require('jsonwebtoken');
 const {verificarToken} = require('../handlers/jwt.js')
 
-const verificarToken = (req, res, next) => {
+const verificarTokenMw = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
@@ -17,4 +16,4 @@ const verificarToken = (req, res, next) => {
   }
 };
 
-module.exports = { verificarToken };
+module.exports = { verificarTokenMw };

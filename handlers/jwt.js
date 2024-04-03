@@ -2,11 +2,14 @@ const jwt = require('jsonwebtoken')
 const {jwtSecret} = require('../config')
 
 const generarToken = (usuarioId) => {
-    return jwt.sign({id:usuarioId}, jwtSecret, {expiresIn: '200h'})
+    const token = jwt.sign({id:usuarioId}, jwtSecret, {expiresIn: '200h'})
+    console.log(token)
+    return token
 }
 
 const verificarToken = (token) => {
-    return jwt.verify(token, jwtSecret)
+    const verification = jwt.verify(token, jwtSecret)
+    return verification
 }
 
 module.exports = {

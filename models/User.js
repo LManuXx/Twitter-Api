@@ -15,10 +15,6 @@ const usuarioSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    edad: {
-      type: Number,
-      required: true
-    },
     tweets: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Tweet' 
@@ -33,44 +29,15 @@ const usuarioSchema = new mongoose.Schema({
     },
     seguidores: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario' // Referencia al modelo de Usuario
+        ref: 'Usuario'
       }],
       seguidos: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario' // Referencia al modelo de Usuario
+        ref: 'Usuario' 
       }]
   });
 
 
-usuarioSchema.pre('save', async function(next) {
-  try {
-    
-    if (!this.isModified('contraseña')) {
-      return next();
-    }
-
-    
-    const hash = await bcrypt.hash(this.contraseña, 10);
-
-    
-    this.contraseña = hash;
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-
-usuarioSchema.methods.compararContraseña = async function(contraseña) {
-  try {
-
-    return await bcrypt.compare(contraseña, this.contraseña);
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-
-const Usuario = mongoose.model('Usuario', usuarioSchema);
+const Usuario = mongoose.model('User', usuarioSchema);
 
 module.exports = Usuario;
