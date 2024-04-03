@@ -1,6 +1,6 @@
 // usuarioController.js
 
-const Usuario = require('./models/Usuario');
+const Usuario = require('../models/User.js');
 
 exports.obtenerTodosLosUsuarios = async (req, res) => {
   // Lógica para obtener todos los usuarios

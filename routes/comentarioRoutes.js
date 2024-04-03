@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Comentario = require('../models/Comentario.js');
+const comentarioController = require('../controllers/comentarioController.js')
 
 // Obtener todos los comentarios de un tweet
 router.get('/:tweetId', comentarioController.obtenerComentariosPorTweet);

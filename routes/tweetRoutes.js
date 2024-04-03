@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Tweet = require('../models/Tweet.js');
-const tweetController = require('./tweetController');
+const tweetController = require('../controllers/tweetController.js');
 
 // Obtener todos los tweets
 router.get('/', tweetController.obtenerTodosLosTweets);

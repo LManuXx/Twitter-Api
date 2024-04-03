@@ -1,6 +1,6 @@
 // tweetController.js
 
-const Tweet = require('./models/Tweet');
+const Tweet = require('../models/Tweet.js');
 
 exports.obtenerTodosLosTweets = async (req, res) => {
   // Lógica para obtener todos los tweets

@@ -1,5 +1,5 @@
 
-const Comentario = require('./models/Comentario');
+const Comentario = require('../models/Comentario.js');
 
 exports.obtenerComentariosPorTweet = async (req, res) => {
   // Lógica para obtener todos los comentarios de un tweet
