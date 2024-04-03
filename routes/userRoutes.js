@@ -2,21 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/User.js');
 const usuarioController = require('../controllers/usuarioController.js');
+const { verificarToken } = require('../handlers/jwt.js');
 
-// Obtener todos los usuarios
-router.get('/', usuarioController.obtenerTodosLosUsuarios);
+router.get('/', verificarToken ,usuarioController.obtenerTodosLosUsuarios);
 
-// Obtener un usuario por su ID
-router.get('/:id', usuarioController.obtenerUsuarioPorId);
+router.get('/:id', verificarToken ,usuarioController.obtenerUsuarioPorId);
 
-// Crear un nuevo usuario
 router.post('/', usuarioController.crearNuevoUsuario);
 
-// Actualizar un usuario existente
-router.put('/:id', usuarioController.actualizarUsuario);
+router.put('/:id', verificarToken ,usuarioController.actualizarUsuario);
 
-// Eliminar un usuario por su ID
-router.delete('/:id', usuarioController.eliminarUsuarioPorId);
+router.delete('/:id', verificarToken ,usuarioController.eliminarUsuarioPorId);
 
 
 module.exports = router;

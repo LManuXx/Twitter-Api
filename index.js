@@ -4,7 +4,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes.js');
 const tweetRoutes = require('./routes/tweetRoutes.js');
 const comentarioRoutes = require('./routes/comentarioRoutes.js');
-const {PORT} = require('../config')
+const {PORT} = require('./config.js')
 
 const app = express();
 
