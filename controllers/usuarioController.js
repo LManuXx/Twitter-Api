@@ -92,7 +92,46 @@ exports.login = async (req, res) => {
 };
 
 exports.actualizarUsuario = async (req, res) => {
-  
+  const { id } = req.params;
+  const { nombre, correo, contraseña } = req.body;
+  const usuarioActual = req.usuario; 
+
+  try {
+    let usuario = await Usuario.findById(id);
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    
+    if (usuarioActual._id !== usuario._id) {
+      return res.status(403).json({ mensaje: 'No tienes permiso para actualizar este usuario' });
+    }
+
+    
+    if (correo && correo !== usuario.correo) {
+      const correoExistente = await Usuario.findOne({ correo });
+      if (correoExistente) {
+        return res.status(400).json({ mensaje: 'El correo ya está en uso' });
+      }
+    }
+
+    
+    usuario.nombre = nombre || usuario.nombre;
+    usuario.correo = correo || usuario.correo;
+
+    
+    if (contraseña) {
+      const contraseñaHasheada = await bcrypt.hash(contraseña, 10);
+      usuario.contraseña = contraseñaHasheada;
+    }
+
+    await usuario.save();
+
+    res.json({ mensaje: 'Usuario actualizado exitosamente', usuario });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar usuario', error: error.message });
+  }
 };
 
 exports.eliminarUsuarioPorId = async (req, res) => {
