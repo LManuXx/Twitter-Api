@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use('/usuarios', userRoutes);
 app.use('/tweets', tweetRoutes);
-app.use('/tweets/:tweetId/comentarios', comentarioRoutes);
+app.use('/comentarios', comentarioRoutes);
 
 
 app.listen(PORT, () => {

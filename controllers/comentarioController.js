@@ -1,4 +1,5 @@
 const Comentario = require('../models/Comentario.js')
+const Tweet = require('../models/Tweet.js')
 
 exports.obtenerComentariosPorTweet = async (req, res) => {
   try {
@@ -24,22 +25,27 @@ exports.obtenerComentarioPorId = async (req, res) => {
 }
 
 exports.crearNuevoComentario = async (req, res) => {
-  const { contenido } = req.body
-  const usuarioId = req.usuario.id
-  const tweetId = req.body.tweetId 
+  const { contenido } = req.body;
+  const usuarioId = req.usuario.id;
+  const tweetId = req.params.tweetId;
 
   try {
+    // Crear el nuevo comentario
     const nuevoComentario = new Comentario({
       contenido,
       autor: usuarioId,
       tweet: tweetId
     });
     await nuevoComentario.save();
-    res.status(201).json({ mensaje: 'Comentario creado correctamente', comentario: nuevoComentario })
+
+    // Agregar el comentario al array de comentarios en el tweet correspondiente
+    await Tweet.findByIdAndUpdate(tweetId, { $push: { comentarios: nuevoComentario._id } });
+
+    res.status(201).json({ mensaje: 'Comentario creado correctamente', comentario: nuevoComentario });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al crear el comentario', error: error.message })
+    res.status(500).json({ mensaje: 'Error al crear el comentario', error: error.message });
   }
-}
+};
 
 exports.actualizarComentario = async (req, res) => {
   const comentarioId = req.params.id
