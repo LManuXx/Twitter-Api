@@ -1,21 +1,22 @@
-const express = require('express');
-const router = express.Router();
-const Tweet = require('../models/Tweet.js');
-const tweetController = require('../controllers/tweetController.js');
+const express = require('express')
+const router = express.Router()
+const Tweet = require('../models/Tweet.js')
+const tweetController = require('../controllers/tweetController.js')
+const { verificarTokenMw } = require('../middleware/authMiddleware.js')
 
-// Obtener todos los tweets
-router.get('/', tweetController.obtenerTodosLosTweets);
 
-// Obtener un tweet por su ID
-router.get('/:id', tweetController.obtenerTweetPorId);
+router.get('/', verificarTokenMw,tweetController.obtenerTodosLosTweets)
 
-// Crear un nuevo tweet
-router.post('/', tweetController.crearNuevoTweet);
 
-// Actualizar un tweet existente
-router.put('/:id', tweetController.actualizarTweet);
+router.get('/:id', verificarTokenMw,tweetController.obtenerTweetPorId)
 
-// Eliminar un tweet por su ID
-router.delete('/:id', tweetController.eliminarTweetPorId);
 
-module.exports = router;
+router.post('/', verificarTokenMw,tweetController.crearNuevoTweet)
+
+
+router.put('/:id', verificarTokenMw,tweetController.actualizarTweet)
+
+
+router.delete('/:id', verificarTokenMw,tweetController.eliminarTweetPorId)
+
+module.exports = router
