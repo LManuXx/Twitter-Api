@@ -10,7 +10,7 @@ router.post('/:tweetId',verificarTokenMw, likeController.darLikeAPublicacion)
 
 router.post('/unlike/:tweetId',verificarTokenMw,likeController.quitarLikeAPublicacion)
 
-router.post('/:tweetId/users',verificarTokenMw,likeController.obtenerUsuariosQueHanDadoLike)
+router.get('/:tweetId/users',verificarTokenMw,likeController.obtenerUsuariosQueHanDadoLike)
 
 module.exports = router
 

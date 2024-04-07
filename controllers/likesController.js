@@ -26,12 +26,12 @@ exports.darLikeAPublicacion = async (req, res) => {
 
 
     const nuevoLike = new Like({
-      usuario: usuarioId,
+      autor: usuarioId,
       tweet: tweetId
     });
 
     await nuevoLike.save()
-    await Tweet.findByIdAndUpdate(tweetId, { $push: { favoritoDe: nuevoLike.usuario } })
+    await Tweet.findByIdAndUpdate(tweetId, { $push: { favoritoDe: nuevoLike.autor } })
 
     res.status(201).json({ mensaje: 'Like agregado correctamente' })
   } catch (error) {
@@ -44,7 +44,7 @@ exports.quitarLikeAPublicacion = async (req, res) => {
   const usuarioId = req.usuario.id;
 
   try {
-    await Like.findOneAndDelete({ tweet: tweetId, usuario: usuarioId })
+    await Like.findOneAndDelete({ tweet: tweetId, autor: usuarioId })
     await Tweet.findByIdAndUpdate(tweetId, { $pull: { favoritoDe: usuarioId } })
     res.json({ mensaje: 'Like eliminado correctamente' })
   } catch (error) {
@@ -57,7 +57,7 @@ exports.obtenerUsuariosQueHanDadoLike = async (req, res) => {
 
   try {
     const likes = await Like.find({ tweet: tweetId })
-    const usuariosQueHanDadoLike = await Usuario.find({ _id: { $in: likes.map(like => like.usuario) } })
+    const usuariosQueHanDadoLike = await Usuario.find({ _id: { $in: likes.map(like => like.autor) } })
     res.json(usuariosQueHanDadoLike)
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener los usuarios que han dado like a la publicación', error: error.message })
