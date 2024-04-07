@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes.js')
 const tweetRoutes = require('./routes/tweetRoutes.js')
 const comentarioRoutes = require('./routes/comentarioRoutes.js')
 const likeRoutes = require('./routes/likeRoutes.js')
+const followRoutes = require('./routes/followRoutes.js')
 const {PORT} = require('./config.js')
 
 const app = express()
@@ -20,6 +21,7 @@ app.use('/usuarios', userRoutes)
 app.use('/tweets', tweetRoutes)
 app.use('/comentarios', comentarioRoutes)
 app.use('/likes', likeRoutes)
+app.use('/follow',followRoutes)
 
 
 app.listen(PORT, () => {
