@@ -24,6 +24,10 @@ const tweetSchema = new mongoose.Schema({
   fechaPublicacion: {
     type: Date,
     default: Date.now
+  },
+  retweetDe: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tweet'
   }
 });
 

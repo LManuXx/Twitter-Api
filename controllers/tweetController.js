@@ -1,4 +1,5 @@
 const Tweet = require('../models/Tweet.js')
+const Usuario = require('../models/User.js')
 
 exports.obtenerTodosLosTweets = async (req, res) => {
   
@@ -54,6 +55,8 @@ exports.crearNuevoTweet = async (req, res) => {
     )
 
     await nuevoTweet.save()
+    await Usuario.findByIdAndUpdate(usuarioId, { $push: { tweets: nuevoTweet } })
+
 
     res.status(200).json({
       mensaje: 'Tweet creado correctamente', tweet: nuevoTweet
@@ -105,11 +108,12 @@ exports.eliminarTweetPorId = async (req, res) => {
     }
 
     await Tweet.deleteOne({_id:tweet._id})
+    await Usuario.findByIdAndUpdate(usuarioId, { $pull: { tweets: tweetId } })
 
     res.json({ mensaje: 'Tweet borrado correctamente'})
 
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al actualizar el tweet', error: error.message })
+    res.status(500).json({ mensaje: 'Error al borrar el tweet', error: error.message })
   }
 
 
