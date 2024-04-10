@@ -25,10 +25,10 @@ const tweetSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  retweetDe: {
+  retuiteadoPor: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Tweet'
-  }
+    ref: 'Usuario'
+  }]
 });
 
 

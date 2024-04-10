@@ -34,6 +34,10 @@ const usuarioSchema = new mongoose.Schema({
       seguidos: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario' 
+      }],
+      retweets: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tweet'
       }]
   });
 

@@ -18,7 +18,11 @@ const comentarioSchema = new mongoose.Schema({
   fechaPublicacion: {
     type: Date,
     default: Date.now
-  }
+  },
+  retuiteadoPor: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario'
+  }]
 });
 
 const Comentario = mongoose.model('Comentario', comentarioSchema);

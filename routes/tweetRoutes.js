@@ -19,4 +19,10 @@ router.put('/:id', verificarTokenMw,tweetController.actualizarTweet)
 
 router.delete('/:id', verificarTokenMw,tweetController.eliminarTweetPorId)
 
+
+router.post('/retweet/:id', verificarTokenMw, tweetController.retweetearTweet)
+
+
+router.delete('/retweet/:id', verificarTokenMw, tweetController.quitarRetweet)
+
 module.exports = router

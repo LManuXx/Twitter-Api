@@ -116,5 +116,48 @@ exports.eliminarTweetPorId = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al borrar el tweet', error: error.message })
   }
 
+}
 
+
+exports.retweetearTweet = async (req, res) => {
+  const tweetId = req.params.id
+  const usuarioId = req.usuario.id
+
+  try {
+    
+    const usuario = await Usuario.findById(usuarioId)
+    if (usuario.retweets.includes(tweetId)) {
+      return res.status(400).json({ mensaje: 'Ya has retuiteado este tweet' })
+    }
+    
+    await Usuario.findByIdAndUpdate(usuarioId,{ $push: { retweets: tweetId } })
+
+    await Tweet.findByIdAndUpdate(tweetId,{ $push: { retuiteadoPor: usuarioId} })
+
+    res.status(201).json({ mensaje: 'Tweet retuiteado correctamente' })
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al retuitear el tweet', error: error.message })
+  }
+}
+
+
+exports.quitarRetweet = async (req, res) => {
+  const tweetId = req.params.id
+  const usuarioId = req.usuario.id
+
+  try {
+    
+    const usuario = await Usuario.findById(usuarioId)
+    if (!usuario.retweets.includes(tweetId)) {
+      return res.status(400).json({ mensaje: 'Todavía no has retuiteado este tweet' })
+    }
+
+    await Usuario.findByIdAndUpdate(usuarioId, { $pull: { retweets: tweetId } })
+
+    await Tweet.findByIdAndUpdate(tweetId, { $pull: { retuiteadoPor: usuarioId } })
+
+    res.status(200).json({ mensaje: 'Retweet eliminado correctamente' })
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al quitar el retweet del tweet', error: error.message })
+  }
 };
